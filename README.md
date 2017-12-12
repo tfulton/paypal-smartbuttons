@@ -26,3 +26,9 @@ Implement individual checkout experiences using various Smart Button configurati
 * Page must render.
 * Funds are deposited in the target sandbox merchant account as required by the currency and funding type.
 
+# Extra Credit
+Try any of the following client side implementations depending on your interest:
+* [Mark](https://developer.paypal.com/demo/checkout/#/pattern/mark)
+* [Confirmation Page](https://developer.paypal.com/demo/checkout/#/pattern/confirm)
+* [INSTRUMENT_DECLINED Redirect](https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/customize-the-checkout-flow/#redirect-for-an-alternate-funding-source)
+
