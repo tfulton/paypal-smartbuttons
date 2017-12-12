@@ -13,8 +13,9 @@ Implement individual checkout experiences using various Smart Button configurati
 * Various [FUNDING types](https://github.com/paypal/paypal-checkout/blob/master/src/config/constants.js#L122)
 * Credit (w/second button)
 * Multi-Currency and Multi-Language Combinations (see [supported currency](https://developer.paypal.com/docs/integration/direct/rest/currency-codes/) and [locale codes](https://developer.paypal.com/docs/classic/api/locale_codes/))
+* Combinations of the Above - depending on your appetite for experimentation.
 
-**HINT:** not all combinations will together. For instance, vertical orientation allows some funding sources, while horizontal does not.  Some countries allow some funding sources, while others do not.  *This is part of the challenge!*
+**HINT:** not all combinations work together. For instance, the FUNDING.ELV type works only with Germany (DE) and Austria (AT), FUNDING.CREDIT works with US, GB and DE.  Use these combinations to test your understanding of the options available.  *This is part of the challenge!*
 
 # Implementation
 * Put your REST App 'clientId' in the appropriate location of [template.html](./template.html)
