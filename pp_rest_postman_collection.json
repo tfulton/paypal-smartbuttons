@@ -1,0 +1,587 @@
+{
+	"info": {
+		"name": "PayPal REST - Basic",
+		"_postman_id": "3b713b6f-eed9-072c-8366-a705a5058196",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth Token Request - Sandbox",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "AWWP4hOVd4Z6iITRXT_X_DKJ02Bh5_59njQZHMK2lmksIPZpCwdn8t-ODbb3BR4Ozq8KS8e27EHcEgBs",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "EIdMRe1G7bxts0ak0aUku9OWHNtGTWLOJWGSKS7ucNSCkSNzs3iFFslZQS_BgIwd9x8RQnbJ1KKsx_--",
+							"type": "string"
+						},
+						{
+							"key": "saveHelperData",
+							"type": "any"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic QVlsZzVMOEI3Vnpkc3F0RlRrajZvR1NRMzcxcDBMWktjNnVobHdVemlnOFVvNFBlUWt5TFNtMThMRlpiSzYxY3ZTWW12cnBqTUNTNzBYSXc6RUg1UWE3TFhzTzN5QW9Vd25vU3cwWXBsLVR1OWRNMWxfM0JqN0pZa2IxaTlCTUhtdFN0MS0tWFA2MlVmdzY3NUd4QWZYQnBXMGV2QktfRE8="
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "grant_type=client_credentials"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Payment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"intent\": \"order\",\n    \"payer\": {\"payment_method\": \"paypal\"},\n    \"transactions\": [{\n        \"amount\": {\n            \"total\": \"30.11\",\n            \"currency\": \"USD\",\n            \"details\": {\n                \"subtotal\": \"30.00\",\n                \"tax\": \"0.07\",\n                \"shipping\": \"0.03\",\n                \"handling_fee\": \"1.00\",\n                \"shipping_discount\": \"-1.00\",\n                \"insurance\": \"0.01\"\n            }\n        },\n        \"description\": \"Drone parts and equipment.\",\n        \"custom\": \"NLE_90048630024435\",\n        \"invoice_number\": \"0000017\",\n        \"payment_options\": {\"allowed_payment_method\": \"INSTANT_FUNDING_SOURCE\"},\n        \"soft_descriptor\": \"ECHI5786786\",\n        \"item_list\": {\n            \"items\": [{\n                \"name\": \"hat\",\n                \"description\": \"Brown hat.\",\n                \"quantity\": \"5\",\n                \"price\": \"3\",\n                \"tax\": \"0.01\",\n                \"sku\": \"1\",\n                \"currency\": \"USD\"\n            }, {\n                \"name\": \"handbag\",\n                \"description\": \"Black handbag.\",\n                \"quantity\": \"1\",\n                \"price\": \"15\",\n                \"tax\": \"0.02\",\n                \"sku\": \"product34\",\n                \"currency\": \"USD\"\n            }],\n            \"shipping_address\": {\n                \"recipient_name\": \"Brian Robinson\",\n                \"line1\": \"4th Floor\",\n                \"line2\": \"Unit #34\",\n                \"city\": \"San Jose\",\n                \"country_code\": \"US\",\n                \"postal_code\": \"95131\",\n                \"phone\": \"011862212345678\",\n                \"state\": \"CA\"\n            }\n        }\n    }],\n    \"note_to_payer\": \"Contact us for any questions on your order.\",\n    \"redirect_urls\": {\"return_url\": \"http://www.paypal.com/return\", \"cancel_url\": \"http://www.paypal.com/cancel\"}\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/payment",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Payment",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"intent\": \"order\",\n    \"payer\": {\"payment_method\": \"paypal\"},\n    \"transactions\": [{\n        \"amount\": {\n            \"total\": \"30.11\",\n            \"currency\": \"USD\",\n            \"details\": {\n                \"subtotal\": \"30.00\",\n                \"tax\": \"0.07\",\n                \"shipping\": \"0.03\",\n                \"handling_fee\": \"1.00\",\n                \"shipping_discount\": \"-1.00\",\n                \"insurance\": \"0.01\"\n            }\n        },\n        \"description\": \"Drone parts and equipment.\",\n        \"custom\": \"NLE_90048630024435\",\n        \"invoice_number\": \"0000017\",\n        \"payment_options\": {\"allowed_payment_method\": \"INSTANT_FUNDING_SOURCE\"},\n        \"soft_descriptor\": \"ECHI5786786\",\n        \"item_list\": {\n            \"items\": [{\n                \"name\": \"hat\",\n                \"description\": \"Brown hat.\",\n                \"quantity\": \"5\",\n                \"price\": \"3\",\n                \"tax\": \"0.01\",\n                \"sku\": \"1\",\n                \"currency\": \"USD\"\n            }, {\n                \"name\": \"handbag\",\n                \"description\": \"Black handbag.\",\n                \"quantity\": \"1\",\n                \"price\": \"15\",\n                \"tax\": \"0.02\",\n                \"sku\": \"product34\",\n                \"currency\": \"USD\"\n            }],\n            \"shipping_address\": {\n                \"recipient_name\": \"Brian Robinson\",\n                \"line1\": \"4th Floor\",\n                \"line2\": \"Unit #34\",\n                \"city\": \"San Jose\",\n                \"country_code\": \"US\",\n                \"postal_code\": \"95131\",\n                \"phone\": \"011862212345678\",\n                \"state\": \"CA\"\n            }\n        }\n    }],\n    \"note_to_payer\": \"Contact us for any questions on your order.\",\n    \"redirect_urls\": {\"return_url\": \"http://www.paypal.com/return\", \"cancel_url\": \"http://www.paypal.com/cancel\"}\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/payment/PAY-14C78351Y6686613CLIKIJUY",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"payment",
+						"PAY-14C78351Y6686613CLIKIJUY"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Execute Payment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"payer_id\": \"VTW5PBHNTV24A\"\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/payment/PAY-14C78351Y6686613CLIKIJUY/execute",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"payment",
+						"PAY-14C78351Y6686613CLIKIJUY",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/payment?count=10&start_index=0&sort_by=create_time&sort_order=desc",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"payment"
+					],
+					"query": [
+						{
+							"key": "count",
+							"value": "10",
+							"equals": true
+						},
+						{
+							"key": "start_index",
+							"value": "0",
+							"equals": true
+						},
+						{
+							"key": "sort_by",
+							"value": "create_time",
+							"equals": true
+						},
+						{
+							"key": "sort_order",
+							"value": "desc",
+							"equals": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"purchase_units\": [\n    {\n      \"reference_id\": \"store_mobile_world_order_1234\",\n      \"description\": \"Mobile World Store order-1234\",\n      \"amount\": {\n        \"currency\": \"USD\",\n        \"details\": {\n          \"subtotal\": \"1.09\",\n          \"shipping\": \"0.02\",\n          \"tax\": \"0.33\"\n        },\n        \"total\": \"1.44\"\n      },\n      \"payee\": {\n        \"email\": \"tofulton-buyer@paypal.com\"\n      },\n      \"items\": [\n        {\n          \"name\": \"NeoPhone\",\n          \"sku\": \"sku03\",\n          \"price\": \"0.54\",\n          \"currency\": \"USD\",\n          \"quantity\": \"1\",\n          \"category\": \"PHYSICAL\"\n        },\n        {\n          \"name\": \"Fitness Watch\",\n          \"sku\": \"sku04\",\n          \"price\": \"0.55\",\n          \"currency\": \"USD\",\n          \"quantity\": \"1\",\n          \"category\": \"PHYSICAL\"\n        }\n      ],\n      \"shipping_address\": {\n        \"recipient_name\": \"John Doe\",\n        \"line1\": \"2211 N First Street\",\n        \"line2\": \"Building 17\",\n        \"city\": \"San Jose\",\n        \"country_code\": \"US\",\n        \"postal_code\": \"95131\",\n        \"state\": \"CA\",\n        \"phone\": \"(123) 456-7890\"\n      },\n      \"shipping_method\": \"United Postal Service\",\n      \"payment_linked_group\": 1,\n      \"custom\": \"custom_value_2388\",\n      \"invoice_number\": \"invoice_number_2388\",\n      \"payment_descriptor\": \"Payment Mobile World\"\n    }\n  ],\n  \"redirect_urls\": {\n    \"return_url\": \"https://marketplace.com/return\",\n    \"cancel_url\": \"https://marketplace.com/cancel\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/checkout/orders",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"checkout",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n  \t\t\"currency\": \"USD\",\n\t\t\"total\": \"10.00\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/orders/O-1W687847670179143",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"orders",
+						"O-1W687847670179143"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n      \"currency\": \"USD\",\n      \"total\": \"10.01\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/orders/O-9P568866X7115020T/authorize",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"orders",
+						"O-9P568866X7115020T",
+						"authorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Void Auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n  \t\t\"currency\": \"USD\",\n\t\t\"total\": \"80.00\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/authorization/1KS06621X5002543D/void",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"authorization",
+						"1KS06621X5002543D",
+						"void"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Auth",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n  \t\t\"currency\": \"USD\",\n\t\t\"total\": \"80.00\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/authorization/2KS573714L1665831",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"authorization",
+						"2KS573714L1665831"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Capture Auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n  \"currency\": \"USD\",\n  \"total\": \"10.01\"\n  },\n  \"is_final_capture\": true\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/authorization/6YW08554VG153045Y/capture",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"authorization",
+						"6YW08554VG153045Y",
+						"capture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Capture Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"amount\": {\n  \"currency\": \"USD\",\n  \"total\": \"30.20\"\n  },\n  \"is_final_capture\": false\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/orders/O-56478215FC749830H/capture",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"orders",
+						"O-56478215FC749830H",
+						"capture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Capture List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"intent\": \"order\",\n    \"payer\": {\"payment_method\": \"paypal\"},\n    \"transactions\": [{\n        \"amount\": {\n            \"total\": \"30.11\",\n            \"currency\": \"USD\",\n            \"details\": {\n                \"subtotal\": \"30.00\",\n                \"tax\": \"0.07\",\n                \"shipping\": \"0.03\",\n                \"handling_fee\": \"1.00\",\n                \"shipping_discount\": \"-1.00\",\n                \"insurance\": \"0.01\"\n            }\n        },\n        \"description\": \"Drone parts and equipment.\",\n        \"custom\": \"NLE_90048630024435\",\n        \"invoice_number\": \"0000017\",\n        \"payment_options\": {\"allowed_payment_method\": \"INSTANT_FUNDING_SOURCE\"},\n        \"soft_descriptor\": \"ECHI5786786\",\n        \"item_list\": {\n            \"items\": [{\n                \"name\": \"hat\",\n                \"description\": \"Brown hat.\",\n                \"quantity\": \"5\",\n                \"price\": \"3\",\n                \"tax\": \"0.01\",\n                \"sku\": \"1\",\n                \"currency\": \"USD\"\n            }, {\n                \"name\": \"handbag\",\n                \"description\": \"Black handbag.\",\n                \"quantity\": \"1\",\n                \"price\": \"15\",\n                \"tax\": \"0.02\",\n                \"sku\": \"product34\",\n                \"currency\": \"USD\"\n            }],\n            \"shipping_address\": {\n                \"recipient_name\": \"Brian Robinson\",\n                \"line1\": \"4th Floor\",\n                \"line2\": \"Unit #34\",\n                \"city\": \"San Jose\",\n                \"country_code\": \"US\",\n                \"postal_code\": \"95131\",\n                \"phone\": \"011862212345678\",\n                \"state\": \"CA\"\n            }\n        }\n    }],\n    \"note_to_payer\": \"Contact us for any questions on your order.\",\n    \"redirect_urls\": {\"return_url\": \"http://www.paypal.com/return\", \"cancel_url\": \"http://www.paypal.com/cancel\"}\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/capture/2KS573714L1665831",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"capture",
+						"2KS573714L1665831"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Capture",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"intent\": \"order\",\n    \"payer\": {\"payment_method\": \"paypal\"},\n    \"transactions\": [{\n        \"amount\": {\n            \"total\": \"30.11\",\n            \"currency\": \"USD\",\n            \"details\": {\n                \"subtotal\": \"30.00\",\n                \"tax\": \"0.07\",\n                \"shipping\": \"0.03\",\n                \"handling_fee\": \"1.00\",\n                \"shipping_discount\": \"-1.00\",\n                \"insurance\": \"0.01\"\n            }\n        },\n        \"description\": \"Drone parts and equipment.\",\n        \"custom\": \"NLE_90048630024435\",\n        \"invoice_number\": \"0000017\",\n        \"payment_options\": {\"allowed_payment_method\": \"INSTANT_FUNDING_SOURCE\"},\n        \"soft_descriptor\": \"ECHI5786786\",\n        \"item_list\": {\n            \"items\": [{\n                \"name\": \"hat\",\n                \"description\": \"Brown hat.\",\n                \"quantity\": \"5\",\n                \"price\": \"3\",\n                \"tax\": \"0.01\",\n                \"sku\": \"1\",\n                \"currency\": \"USD\"\n            }, {\n                \"name\": \"handbag\",\n                \"description\": \"Black handbag.\",\n                \"quantity\": \"1\",\n                \"price\": \"15\",\n                \"tax\": \"0.02\",\n                \"sku\": \"product34\",\n                \"currency\": \"USD\"\n            }],\n            \"shipping_address\": {\n                \"recipient_name\": \"Brian Robinson\",\n                \"line1\": \"4th Floor\",\n                \"line2\": \"Unit #34\",\n                \"city\": \"San Jose\",\n                \"country_code\": \"US\",\n                \"postal_code\": \"95131\",\n                \"phone\": \"011862212345678\",\n                \"state\": \"CA\"\n            }\n        }\n    }],\n    \"note_to_payer\": \"Contact us for any questions on your order.\",\n    \"redirect_urls\": {\"return_url\": \"http://www.paypal.com/return\", \"cancel_url\": \"http://www.paypal.com/cancel\"}\n}"
+				},
+				"url": {
+					"raw": "https://api.sandbox.paypal.com/v1/payments/capture/2KS573714L1665831",
+					"protocol": "https",
+					"host": [
+						"api",
+						"sandbox",
+						"paypal",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"capture",
+						"2KS573714L1665831"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
