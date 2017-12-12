@@ -9,9 +9,9 @@ The purpose of this project is to implement numerous variations of Smart Buttons
 Implement individual checkout experiences using various Smart Button configurations.  Including:
 * Horizontal Orientation
 * Vertical Orientation
-* Various PayPal Buttons Types (Checkout, Pay, Buy Now, PayPal button)
 * Various [FUNDING types](https://github.com/paypal/paypal-checkout/blob/master/src/config/constants.js#L122)
-* Credit (w/second button)
+* Various PayPal Buttons Types (Checkout, Pay, Buy Now, PayPal button)
+* Credit w/second button
 * Multi-Currency and Multi-Language Combinations (see [supported currency](https://developer.paypal.com/docs/integration/direct/rest/currency-codes/) and [locale codes](https://developer.paypal.com/docs/classic/api/locale_codes/))
 * Combinations of the Above - depending on your appetite for experimentation.
 
