@@ -18,7 +18,7 @@ Implement individual checkout experiences using various Smart Button configurati
 **HINT:** not all combinations work together. For instance, the FUNDING.ELV type works only with Germany (DE) and Austria (AT), FUNDING.CREDIT works with US, GB and DE.  Use these combinations to test your understanding of the options available.  *This is part of the challenge!*
 
 # Implementation
-* Put your REST App 'clientId' in the appropriate location of [template.html:line 88](./template.html)
+* Put your REST App 'clientId' in the appropriate location of [template.html (line 88)](./template.html)
 * Download a copy or clone of this project to use as your base of work.
 * Copy [template.html](./template.html) for each of your examples that you would like to preserve.
 
