@@ -21,9 +21,12 @@ Implement individual checkout experiences using various Smart Button configurati
 * Put your REST App 'clientId' in the appropriate location of [template.html (line 88)](./template.html)
 * Download a copy or clone this project to use as your base of work.
 * Copy [template.html](./template.html) for each of your examples that you would like to preserve.
+* Import [pp_rest_postman_collection.json](./pp_rest_postman_collection.json) into Postman for auth, capture, void, etc.
 
 # Test and Validation
 * Page must render.
+* Complete payment flow.  The included example completes the "execute" portion of the payment cycle.
+* Utilize the Postman collection included (or any PayPal REST collection used thus far) to complete payment life cycle events as desired.
 * Funds are deposited in the target sandbox merchant account as required by the currency and funding type.
 
 # Extra Credit
