@@ -39,10 +39,10 @@
         <div class="field">
             <label>Payment Data</label>
             <pre>
-            <textarea id="paymentJson" rows="30" cols="10">
+            <textarea id="paymentJson" rows="20" cols="10">
 {
   "payment": {
-    "intent": "order",
+    "intent": "authorize",
     "payer": {
       "payment_method": "paypal"
     },
@@ -64,11 +64,12 @@
   }
 }
             </textarea>
-                </pre>
+            </pre>
         </div>
     </div>
     <p/>
-    <div id="paypal-button-container"></div>
+    <div id="paypal-button-container"></div><br/>
+    <div id="paypal-button-container2"></div>
 </div>
 <script>
     $("#home").click(function(){
@@ -89,12 +90,11 @@
             production: '<insert production client id>'
         },
 
-        locale: 'de_DE', // testing ELV
-//        locale: 'es_US', // because we all speak Spanish!
+        locale: 'en_US', // because we all speak Spanish!
 
         style: {
-//            label: 'pay', // checkout | credit | pay
-            layout: 'vertical',
+            label: 'paypal', // checkout | credit | pay | paypal
+            layout: 'horizontal',
             size: 'medium',    // small | medium | responsive
             shape: 'pill',     // pill | rect
             color: 'silver'      // gold | blue | silver
@@ -109,7 +109,7 @@
         // - paypal.FUNDING.ELV
 
         funding: {
-            allowed: [ paypal.FUNDING.CARD, paypal.FUNDING.CREDIT, paypal.FUNDING.ELV ],
+            allowed: [ ],
             disallowed: [ ]
         },
 
@@ -117,7 +117,9 @@
         payment: function (data, actions) {
             var jsonStr = document.getElementById("paymentJson").value;
             console.log("json: ", jsonStr)
-            return actions.payment.create(JSON.parse(jsonStr));
+            return actions.payment.create(
+                JSON.parse(jsonStr)
+            );
         },
 
         onAuthorize: function (data, actions) {
@@ -132,14 +134,9 @@
 
                 // present the payment response payload here
                 // NOTE:  we could also present a confirmation (i.e. shipping options) or other page using the same pattern below
-                var paymentStr = "<h2><pre>Get Payment Response</h2>";
-                paymentStr += "<div><pre>" + JSON.stringify(payment, null, 4) + "</pre></div>";
+                document.getElementById("cart").innerHTML = "<h2>Get Payment Response</h2>" +
+                    "<div><pre>" + JSON.stringify(payment, null, 4) + "</pre></div>";
 
-                return actions.payment.execute().then(function(executeResp){
-                    paymentStr += "<h2><pre>Execute Payment Response</h2>";
-                    paymentStr += "<p/><div><pre>" + JSON.stringify(executeResp, null, 4) + "</pre></div>"
-                    document.getElementById("cart").innerHTML = paymentStr;
-                })
             });
         }
 
