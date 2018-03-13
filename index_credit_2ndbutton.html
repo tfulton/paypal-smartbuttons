@@ -1,0 +1,210 @@
+<html>
+<head>
+    <title>Smart Buttons Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <style>
+        /* Media query for mobile viewport */
+        @media screen and (max-width: 400px) {
+            #paypal-button-container {
+                width: 100%;
+            }
+        }
+
+        /* Media query for desktop viewport */
+        @media screen and (min-width: 400px) {
+            #paypal-button-container {
+                width: 250px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="ui attached stackable menu">
+    <div class="ui container">
+        <a class="item" id="home">
+            <i class="home icon"></i> Home
+        </a>
+    </div>
+</div>
+<div class="ui raised container segment visible content" id="cart">
+    <h2 class="ui header">Smart Button Tests</h2>
+    <div class="ui form">
+        <div class="field">
+            <label>Payment Data</label>
+            <pre>
+            <textarea id="paymentJson" rows="20" cols="10">
+{
+  "payment": {
+    "intent": "authorize",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "transactions": [
+      {"amount": { "total": 10.01, "currency": "USD" }}
+    ],
+    "note_to_payer": "Contact us for any questions on your order.",
+    "redirect_urls": {
+      "return_url": "http://www.paypal.com/return",
+      "cancel_url": "http://www.paypal.com/cancel"
+    }
+  },
+  "experience": {
+    "input_fields": {
+      "no_shipping": 0,
+      "address_override": 0
+
+    }
+  }
+}
+            </textarea>
+            </pre>
+        </div>
+    </div>
+    <p/>
+    <div id="paypal-button-container"></div><br/>
+    <div id="paypal-button-container2"></div>
+</div>
+<script>
+    $("#home").click(function(){
+        /* function goes in here */
+        location.reload()
+    });
+</script>
+<script>
+
+    // Render the PayPal button
+    paypal.Button.render({
+
+        // Set your environment
+
+        env: 'sandbox', // sandbox | production
+        client: {
+            sandbox: 'AYidKuTmO-c-5kUElRNtNin579BxO3G6dzYK9rLuY0AUp01QY67KZTRXWedVDAHYdhE7IvgPuWDtBqfq',
+            production: '<insert production client id>'
+        },
+
+        locale: 'en_US', // because we all speak Spanish!
+
+        style: {
+            label: 'paypal', // checkout | credit | pay | paypal
+            layout: 'horizontal',
+            size: 'medium',    // small | medium | responsive
+            shape: 'pill',     // pill | rect
+            color: 'silver'      // gold | blue | silver
+        },
+
+
+        // Specify allowed and disallowed funding sources
+        //
+        // Options:
+        // - paypal.FUNDING.CARD
+        // - paypal.FUNDING.CREDIT
+        // - paypal.FUNDING.ELV
+
+        funding: {
+            allowed: [ ],
+            disallowed: [ paypal.FUNDING.CREDIT ]
+        },
+
+
+        payment: function (data, actions) {
+            var jsonStr = document.getElementById("paymentJson").value;
+            console.log("json: ", jsonStr)
+            return actions.payment.create(
+                JSON.parse(jsonStr)
+            );
+        },
+
+        onAuthorize: function (data, actions) {
+
+            // get the payment details (pre-execute)
+            return actions.payment.get().then(function(payment) {
+
+                // log some valuable stuff to the javascript console
+                console.log("onAuthorize data:", data);
+                console.log("onAuthorize actions:", actions);
+                console.log("onAuthorize payment:", payment);
+
+                // present the payment response payload here
+                // NOTE:  we could also present a confirmation (i.e. shipping options) or other page using the same pattern below
+                document.getElementById("cart").innerHTML = "<h2>Get Payment Response</h2>" +
+                    "<div><pre>" + JSON.stringify(payment, null, 4) + "</pre></div>";
+
+            });
+        }
+
+    }, '#paypal-button-container');
+
+    // Render the PayPal button
+    paypal.Button.render({
+
+        // Set your environment
+
+        env: 'sandbox', // sandbox | production
+        client: {
+            sandbox: 'AYidKuTmO-c-5kUElRNtNin579BxO3G6dzYK9rLuY0AUp01QY67KZTRXWedVDAHYdhE7IvgPuWDtBqfq',
+            production: '<insert production client id>'
+        },
+
+        locale: 'en_US', // because we all speak Spanish!
+
+        style: {
+            label: 'credit', // checkout | credit | pay | paypal
+            layout: 'horizontal',
+            size: 'medium',    // small | medium | responsive
+            shape: 'pill',     // pill | rect
+            color: 'black'      // gold | blue | silver
+        },
+
+
+        // Specify allowed and disallowed funding sources
+        //
+        // Options:
+        // - paypal.FUNDING.CARD
+        // - paypal.FUNDING.CREDIT
+        // - paypal.FUNDING.ELV
+
+        funding: {
+            allowed: [paypal.FUNDING.CREDIT],
+            disallowed: []
+        },
+
+
+        payment: function (data, actions) {
+            var jsonStr = document.getElementById("paymentJson").value;
+            console.log("json: ", jsonStr)
+            return actions.payment.create(
+                JSON.parse(jsonStr)
+            );
+        },
+
+        onAuthorize: function (data, actions) {
+
+            // get the payment details (pre-execute)
+            return actions.payment.get().then(function(payment) {
+
+                // log some valuable stuff to the javascript console
+                console.log("onAuthorize data:", data);
+                console.log("onAuthorize actions:", actions);
+                console.log("onAuthorize payment:", payment);
+
+                // present the payment response payload here
+                // NOTE:  we could also present a confirmation (i.e. shipping options) or other page using the same pattern below
+                document.getElementById("cart").innerHTML = "<h2>Get Payment Response</h2>" +
+                    "<div><pre>" + JSON.stringify(payment, null, 4) + "</pre></div>";
+
+            });
+        }
+
+    }, '#paypal-button-container2');
+
+</script>
+</body>
+</html>
